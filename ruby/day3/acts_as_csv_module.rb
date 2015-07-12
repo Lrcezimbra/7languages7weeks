@@ -32,7 +32,3 @@ class RubyCsv
   include ActsAsCsv
   acts_as_csv
 end
-
-m = RubyCsv.new
-puts m.headers.inspect
-puts m.csv_contents.inspect
