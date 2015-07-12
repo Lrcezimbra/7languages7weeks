@@ -21,6 +21,11 @@ module ActsAsCsv
       end
     end
 
+    def each(&block)
+      row = CsvRow.new @headers, @csv_contents
+      block.call row
+    end
+
     attr_accessor :headers, :csv_contents
     def initialize
       read
@@ -31,4 +36,22 @@ end
 class RubyCsv
   include ActsAsCsv
   acts_as_csv
+end
+
+class CsvRow
+  def initialize headers, contents
+    @headers = headers
+    @contents = contents
+  end
+
+  def method_missing name, *args
+    column = name.to_s
+    index = @headers.rindex column
+
+    result = @contents.collect do |row|
+      row[index]
+    end
+
+    result
+  end
 end
