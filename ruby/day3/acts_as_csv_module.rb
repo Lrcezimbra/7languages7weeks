@@ -30,25 +30,25 @@ module ActsAsCsv
       read
     end
   end
+
+  class CsvRow
+    def initialize headers, contents
+      @headers = headers
+      @contents = contents
+    end
+
+    def method_missing name, *args
+      index = @headers.rindex name.to_s
+      result = @contents.collect { |row| row[index] }
+
+      result
+    end
+  end
 end
 
 class RubyCsv
   include ActsAsCsv
   acts_as_csv
-end
-
-class CsvRow
-  def initialize headers, contents
-    @headers = headers
-    @contents = contents
-  end
-
-  def method_missing name, *args
-    index = @headers.rindex name.to_s
-    result = @contents.collect { |row| row[index] }
-
-    result
-  end
 end
 #
 #csv = RubyCsv.new
