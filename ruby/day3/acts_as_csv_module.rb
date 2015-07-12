@@ -22,8 +22,7 @@ module ActsAsCsv
     end
 
     def each(&block)
-      row = CsvRow.new @headers, @csv_contents
-      block.call row
+      block.call CsvRow.new @headers, @csv_contents
     end
 
     attr_accessor :headers, :csv_contents
@@ -45,13 +44,13 @@ class CsvRow
   end
 
   def method_missing name, *args
-    column = name.to_s
-    index = @headers.rindex column
-
-    result = @contents.collect do |row|
-      row[index]
-    end
+    index = @headers.rindex name.to_s
+    result = @contents.collect { |row| row[index] }
 
     result
   end
 end
+#
+#csv = RubyCsv.new
+#puts csv.each { |row| row.one }
+#puts csv.each { |row| row.two }
