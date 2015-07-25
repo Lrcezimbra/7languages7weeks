@@ -44,10 +44,20 @@ ListTwoD writeToFile := method(filename,
   listTwoD foreach(value, 
     line := ""
     value foreach(val, 
-      line = "#{line} #{val}" interpolate
+      line = "#{line}#{val} " interpolate
     )
     line = "#{line}\n" interpolate
     file write(line)
+  )
+)
+
+ListTwoD readFromFile := method(filename,
+  file := File clone openForReading(filename)
+  self listTwoD := list()
+
+  lines := file readLines
+  lines foreach(line,
+    listTwoD append(line split)
   )
 )
 
@@ -67,3 +77,10 @@ myList listTwoD println
 "" println
 "------------------------------- Write File -----------------------" println
 myList writeToFile("./abc")
+
+
+"" println
+"------------------------------- Read File -----------------------" println
+myList listTwoD println
+myList readFromFile("./cba")
+myList listTwoD println
