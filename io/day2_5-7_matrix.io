@@ -1,25 +1,14 @@
-ListTwoD := Object clone
+ListTwoD := List clone
+
+ListTwoD listTwoD := list()
 
 ListTwoD dim := method(x, y,
-  self listTwoD := list()
-
-  listX := list()
-  for(i, 1, x,
-    listX append(i)
-  )
-
-  for(i, 1, y,
-    listTwoD append(listX clone)
-  )
+  for(i, 1, y, listTwoD append(list setSize(x)))
 )
 
-ListTwoD set := method(x, y, value,
-  listTwoD at(y) atPut(x, value)
-)
+ListTwoD set := method(x, y, value, listTwoD at(y) atPut(x, value))
 
-ListTwoD get := method(x, y,
-  listTwoD at(y) at(x)
-)
+ListTwoD get := method(x, y, listTwoD at(y) at(x))
 
 ListTwoD transpose := method(
   x := listTwoD at(0) size
