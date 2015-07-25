@@ -38,6 +38,19 @@ ListTwoD transpose := method(
   listTwoD = transposed
 )
 
+ListTwoD writeToFile := method(filename,
+  file := File clone openForUpdating(filename)
+
+  listTwoD foreach(value, 
+    line := ""
+    value foreach(val, 
+      line = "#{line} #{val}" interpolate
+    )
+    line = "#{line}\n" interpolate
+    file write(line)
+  )
+)
+
 myList := ListTwoD clone
 myList dim(5, 3)
 myList listTwoD println
@@ -49,3 +62,8 @@ myList get(0, 0) println
 "------------------------------- Transpose -----------------------" println
 myList transpose
 myList listTwoD println
+
+
+"" println
+"------------------------------- Write File -----------------------" println
+myList writeToFile("./abc")
