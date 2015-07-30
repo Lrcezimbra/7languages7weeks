@@ -1,0 +1,15 @@
+html({"lang" : "pt-br"},
+  head(
+    title("Title test")
+  )
+  body(
+    h1("Olá mundo H1"),
+    h2("Olá mundo H2"),
+    h3("lista: "),
+    ul(
+      li("a"),
+      li("b"),
+      li("c")
+    )
+  )
+)

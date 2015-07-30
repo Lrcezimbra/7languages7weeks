@@ -77,3 +77,8 @@ myBu ul(
   li("Lua"),
   li("JavaScript")
 )
+
+"---------------------- from file ---------------------" println
+myBui := Builder clone
+ioXml := File clone openForReading("example.ioxml") contents
+myBui doString(ioXml)
