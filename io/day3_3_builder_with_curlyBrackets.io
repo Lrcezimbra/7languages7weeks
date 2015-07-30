@@ -8,7 +8,7 @@ curlyBrackets := method(
 )
 Map atPutValue := method(
   self atPut(
-    call evalArgAt(0) asMutable removePrefix("\"") removeSuffix("\""),
+    call message arguments first asString asMutable removePrefix("\"\" ") removeSuffix(" \"\""),
     call evalArgAt(1)
   )
 )
@@ -30,9 +30,9 @@ Builder unindent := method(indentationLevel = indentationLevel - 1; indentationU
 Builder sWrite := Object getSlot("writeln")
 Builder addAttributes := method(args, tag,
   first := args first asString
-  if(first containsSeq("{")) then(
+  if(first containsSeq("{") or first containsSeq("curly")) then(
     attr := ""
-    mapAttr := doString(doString(first))
+    mapAttr := doString(first)
     mapAttr foreach(k, v, attr = "#{attr} #{k}=\"#{v}\"" interpolate)
     sWrite("#{indentation}<#{tag}#{attr}>" interpolate)
     args removeFirst
