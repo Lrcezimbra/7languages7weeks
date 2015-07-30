@@ -14,26 +14,30 @@ Map atPutValue := method(
 )
 
 Builder := Object clone
+Builder indented := true
 Builder indentationLevel := -1
 Builder indentation := ""
 Builder indentationUpdate := method(
-  indentation = ""
-  for(i, 1, indentationLevel,
-    indentation = "#{indentation}  " interpolate
+  if(indented,
+    indentation = ""
+    for(i, 1, indentationLevel,
+      indentation = "#{indentation}  " interpolate
+    )
   )
 )
 Builder indent := method(indentationLevel = indentationLevel + 1; indentationUpdate)
 Builder unindent := method(indentationLevel = indentationLevel - 1; indentationUpdate)
+Builder sWrite := Object getSlot("writeln")
 Builder addAttributes := method(args, tag,
   first := args first asString
   if(first containsSeq("{")) then(
     attr := ""
     mapAttr := doString(doString(first))
     mapAttr foreach(k, v, attr = "#{attr} #{k}=\"#{v}\"" interpolate)
-    writeln("#{indentation}<#{tag}#{attr}>" interpolate)
+    sWrite("#{indentation}<#{tag}#{attr}>" interpolate)
     args removeFirst
   ) else (
-    writeln("#{indentation}<#{tag}>" interpolate)
+    sWrite("#{indentation}<#{tag}>" interpolate)
   )
 )
 Builder forward := method(
@@ -45,20 +49,31 @@ Builder forward := method(
     content := self doMessage(arg)
     if(content type == "Sequence",
       indent
-      writeln("#{indentation}#{content}" interpolate)
+      sWrite("#{indentation}#{content}" interpolate)
       unindent
     )
   )
-  writeln("#{indentation}</#{messageName}>" interpolate)
+  sWrite("#{indentation}</#{messageName}>" interpolate)
   unindent
 )
 
-"!!!!!!!!!!!!!!!!" println
-Builder ul(
+"---------------------- with indentation ---------------------" println
+myB := Builder clone
+myB ul(
+  "{\"name\" : \"lucas\"}",
   li("Io"),
   li("Lua"),
   li("JavaScript")
 )
 
-"----------------------------------" println
-Builder ul("{\"name\" : \"lucas\"}", li("io"))
+
+"---------------------- without indentation ---------------------" println
+myBu := Builder clone
+myBu indented := false
+myBu sWrite := Object getSlot("write")
+myBu ul(
+  "{\"name\" : \"lucas\"}",
+  li("Io"),
+  li("Lua"),
+  li("JavaScript")
+)
